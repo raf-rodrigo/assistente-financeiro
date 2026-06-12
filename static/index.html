@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#1f7a5c">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="stylesheet" href="/static/styles.css">
+    <title>Assistente Financeiro</title>
+  </head>
+  <body>
+    <section class="auth" data-auth-view>
+      <div class="auth__intro">
+        <p>Assistente Financeiro</p>
+        <h1>Entre para acessar seus dados financeiros</h1>
+        <span>Dados pessoais minimos, senha com hash seguro e confirmacao de email antes do uso.</span>
+      </div>
+      <div class="auth__grid">
+        <form class="panel auth-form" data-login-form>
+          <div class="panel__title">
+            <h2>Login</h2>
+            <span>Email e senha</span>
+          </div>
+          <label>Email
+            <input name="email" type="email" autocomplete="email" required>
+          </label>
+          <label>Senha
+            <input name="password" type="password" autocomplete="current-password" minlength="8" required>
+          </label>
+          <button type="submit">Entrar</button>
+        </form>
+
+        <form class="panel auth-form" data-register-form>
+          <div class="panel__title">
+            <h2>Criar conta</h2>
+            <span>Confirme o email</span>
+          </div>
+          <label>Email
+            <input name="email" type="email" autocomplete="email" required>
+          </label>
+          <label>Senha
+            <input name="password" type="password" autocomplete="new-password" minlength="8" required>
+          </label>
+          <label class="check">
+            <input name="consent_lgpd" type="checkbox" required>
+            <span>Li e aceito a <a href="/privacidade" target="_blank" rel="noopener">politica de privacidade</a> e o tratamento dos meus dados para uso do assistente financeiro.</span>
+          </label>
+          <button type="submit">Cadastrar</button>
+        </form>
+      </div>
+
+      <form class="panel confirm-form" data-confirm-form hidden>
+        <div class="panel__title">
+          <h2>Confirmar email</h2>
+          <span>Ambiente dev</span>
+        </div>
+        <label>Token recebido por email
+          <input name="token" required>
+        </label>
+        <button type="submit">Confirmar e entrar</button>
+      </form>
+
+      <div class="oauth-row">
+        <button type="button" data-oauth="google">Google</button>
+        <button type="button" data-oauth="apple">Apple</button>
+      </div>
+      <p class="auth-message" data-auth-message></p>
+    </section>
+
+    <section data-app-view hidden>
+    <header class="topbar">
+      <div>
+        <p>Assistente Financeiro</p>
+        <h1>Controle seus rendimentos, gastos e imprevistos</h1>
+      </div>
+      <label class="switch">
+        <input type="checkbox" data-subscription>
+        <span>Assinar IA</span>
+      </label>
+    </header>
+
+    <main class="shell">
+      <section class="metrics" aria-label="Resumo financeiro">
+        <article><span>Rendimentos</span><strong data-income>R$ 0,00</strong></article>
+        <article><span>Despesas</span><strong data-expenses>R$ 0,00</strong></article>
+        <article><span>Saldo</span><strong data-balance>R$ 0,00</strong></article>
+        <article><span>Imprevistos</span><strong data-unexpected>R$ 0,00</strong></article>
+        <article><span>Economia</span><strong data-savings>0%</strong></article>
+      </section>
+
+      <section class="workspace">
+        <form class="panel entry" data-transaction-form>
+          <div class="panel__title">
+            <h2>Novo lancamento</h2>
+            <span data-usage>0 perguntas gratis</span>
+          </div>
+          <label>Tipo
+            <select name="kind" required>
+              <option value="income">Rendimento</option>
+              <option value="fixed_expense">Gasto mensal</option>
+              <option value="variable_expense">Gasto variavel</option>
+              <option value="unexpected_expense">Gasto imprevisto</option>
+              <option value="other_expense">Outra despesa</option>
+            </select>
+          </label>
+          <div class="field-row">
+            <label>Categoria
+              <input name="category" required placeholder="Salario, aluguel, mercado">
+            </label>
+            <label>Valor
+              <input name="amount" type="number" min="0.01" step="0.01" required placeholder="0,00">
+            </label>
+          </div>
+          <label>Descricao
+            <input name="description" placeholder="Opcional">
+          </label>
+          <label>Data
+            <input name="occurred_on" type="date" required>
+          </label>
+          <button type="submit">Adicionar</button>
+        </form>
+
+        <section class="panel assistant">
+          <div class="panel__title">
+            <h2>Agente IA</h2>
+            <span>OpenAI</span>
+          </div>
+          <form data-assistant-form class="chatbox">
+            <textarea name="message" required minlength="4" maxlength="1200" placeholder="Ex: onde posso reduzir gastos este mes?"></textarea>
+            <button type="submit">Perguntar</button>
+          </form>
+          <p class="answer" data-answer>Registre alguns lancamentos e peca uma analise do seu mes.</p>
+        </section>
+      </section>
+
+      <section class="panel ledger">
+        <div class="panel__title">
+          <h2>Ultimos lancamentos</h2>
+          <span>Mes atual e historico recente</span>
+        </div>
+        <ul data-transactions></ul>
+      </section>
+    </main>
+
+    <dialog data-paywall>
+      <h2>Limite gratuito atingido</h2>
+      <p>Ative a assinatura para continuar usando o agente IA neste mes.</p>
+      <form method="dialog">
+        <button>Entendi</button>
+      </form>
+    </dialog>
+    </section>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>
