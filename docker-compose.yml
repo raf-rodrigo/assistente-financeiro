@@ -9,8 +9,7 @@ services:
       db:
         condition: service_healthy
     volumes:
-      - ./app:/app/app
-      - ./static:/app/static
+      - ./backend/app:/app/app
   db:
     image: postgres:16-alpine
     environment:

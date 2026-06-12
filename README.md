@@ -1,6 +1,6 @@
 # Assistente Financeiro
 
-MVP de assistente financeiro em Python para navegador, Android e iOS via PWA. O projeto usa FastAPI, PostgreSQL, Docker e a API da OpenAI para um agente de apoio financeiro.
+MVP de assistente financeiro em Python para navegador, Android e iOS via PWA. O projeto usa FastAPI, React, PostgreSQL, Docker e a API da OpenAI para um agente de apoio financeiro.
 
 ## Funcionalidades iniciais
 
@@ -11,7 +11,7 @@ MVP de assistente financeiro em Python para navegador, Android e iOS via PWA. O 
 - Resumo mensal com receitas, despesas, saldo, imprevistos e taxa de economia.
 - Agente IA com limite gratuito mensal configuravel.
 - Assinatura simulada para liberar o uso acima do limite.
-- Interface responsiva instalavel como PWA em Android/iOS e navegadores.
+- Interface React responsiva para navegadores, Android e iOS.
 
 ## Privacidade, LGPD e senhas
 
@@ -51,9 +51,47 @@ docker compose up --build
 http://localhost:8001
 ```
 
+## Estrutura do projeto
+
+```text
+backend/
+  app/              # API FastAPI, modelos, seguranca e servicos
+  requirements.txt # dependencias Python
+frontend/
+  src/              # aplicacao React
+  public/           # arquivos publicos do Vite
+  package.json      # dependencias e scripts do frontend
+static/             # build gerado pelo Vite, servido pelo FastAPI
+Dockerfile
+docker-compose.yml
+```
+
+## Frontend React
+
+O frontend fica em `frontend/` e usa React, Vite e TypeScript. No Docker, o build do React e gerado automaticamente e servido pelo FastAPI a partir de `static/`. A pasta `static/` e artefato gerado, nao fonte principal.
+
+Para desenvolver o frontend isolado, instale as dependencias e rode o Vite:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+O Vite sobe em `http://localhost:5173` e encaminha chamadas `/api` para `http://localhost:8001`.
+
+## Backend FastAPI
+
+O backend fica em `backend/` e continua expondo a API em `/api/*`. No container, o pacote `backend/app` e copiado para `/app/app`, por isso o comando de execucao permanece:
+
+```bash
+uvicorn app.main:app --host 0.0.0.0 --port 8000
+```
+
 ## Stack escolhida
 
 - `FastAPI`: simples, rapido e bom para APIs Python.
+- `React + Vite + TypeScript`: frontend componentizado para crescer sem refatoracao grande.
 - `PostgreSQL`: banco relacional robusto para dados financeiros.
 - `PWA`: entrega web, Android e iOS no mesmo codigo inicial.
 - `OpenAI Responses API`: endpoint recomendado pela documentacao atual da OpenAI para apps de geracao de texto.

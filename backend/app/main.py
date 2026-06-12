@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from fastapi import Depends, FastAPI, Header, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -43,7 +45,10 @@ with engine.begin() as connection:
     connection.exec_driver_sql("ALTER TABLE users ADD COLUMN IF NOT EXISTS privacy_version VARCHAR(20) DEFAULT '2026-06-12'")
 
 app = FastAPI(title="Assistente Financeiro", version="0.1.0")
-app.mount("/static", StaticFiles(directory="static"), name="static")
+static_dir = Path("static")
+assets_dir = static_dir / "assets"
+if assets_dir.exists():
+    app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
 
 
 def current_user(
@@ -67,7 +72,7 @@ def index():
 
 @app.get("/privacidade")
 def privacy():
-    return FileResponse("static/privacy.html")
+    return FileResponse("static/index.html")
 
 
 @app.get("/manifest.webmanifest")
