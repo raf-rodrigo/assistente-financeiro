@@ -88,7 +88,7 @@ textarea {
 }
 
 .auth {
-  width: min(980px, calc(100% - 32px));
+  width: min(520px, calc(100% - 32px));
   margin: 38px auto;
 }
 
@@ -114,16 +114,14 @@ textarea {
 
 .auth__intro span {
   display: block;
-  max-width: 680px;
   margin-top: 10px;
   color: var(--muted);
   font-weight: 700;
 }
 
-.auth__grid {
+.auth-card {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
+  gap: 16px;
 }
 
 .auth-form,
@@ -133,7 +131,35 @@ textarea {
 }
 
 .confirm-form {
-  margin-top: 18px;
+  margin-top: 2px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.panel__title.compact {
+  margin-bottom: 0;
+}
+
+.auth-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  padding: 5px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f3f6f4;
+}
+
+.auth-tabs button {
+  min-height: 38px;
+  background: transparent;
+  color: var(--muted);
+}
+
+.auth-tabs button.active {
+  background: var(--surface);
+  color: var(--accent-strong);
+  box-shadow: 0 4px 18px rgba(31, 45, 38, 0.08);
 }
 
 .check {
@@ -149,13 +175,46 @@ textarea {
 }
 
 .oauth-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 12px;
-  margin-top: 18px;
 }
 
-.oauth-row button {
-  background: var(--blue);
+.oauth-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+}
+
+.oauth-button:hover {
+  background: #f7faf8;
+}
+
+.oauth-button svg {
+  width: 21px;
+  height: 21px;
+  flex: 0 0 auto;
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: var(--line);
 }
 
 .auth-message {
@@ -418,8 +477,7 @@ dialog::backdrop {
 
 @media (max-width: 900px) {
   .topbar,
-  .workspace,
-  .auth__grid {
+  .workspace {
     display: grid;
   }
 
@@ -440,7 +498,7 @@ dialog::backdrop {
 
   .metrics,
   .workspace,
-  .auth__grid,
+  .oauth-row,
   .field-row {
     grid-template-columns: 1fr;
   }

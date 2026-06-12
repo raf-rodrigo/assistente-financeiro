@@ -15,56 +15,64 @@
         <h1>Entre para acessar seus dados financeiros</h1>
         <span>Dados pessoais minimos, senha com hash seguro e confirmacao de email antes do uso.</span>
       </div>
-      <div class="auth__grid">
-        <form class="panel auth-form" data-login-form>
-          <div class="panel__title">
-            <h2>Login</h2>
-            <span>Email e senha</span>
-          </div>
+      <section class="panel auth-card">
+        <div class="panel__title">
+          <h2 data-auth-title>Entrar</h2>
+          <span data-auth-subtitle>Email e senha</span>
+        </div>
+
+        <div class="auth-tabs" role="tablist" aria-label="Acesso">
+          <button type="button" class="active" data-auth-mode="login">Entrar</button>
+          <button type="button" data-auth-mode="register">Cadastrar</button>
+        </div>
+
+        <form class="auth-form" data-auth-form>
           <label>Email
             <input name="email" type="email" autocomplete="email" required>
           </label>
           <label>Senha
             <input name="password" type="password" autocomplete="current-password" minlength="8" required>
           </label>
-          <button type="submit">Entrar</button>
-        </form>
-
-        <form class="panel auth-form" data-register-form>
-          <div class="panel__title">
-            <h2>Criar conta</h2>
-            <span>Confirme o email</span>
-          </div>
-          <label>Email
-            <input name="email" type="email" autocomplete="email" required>
-          </label>
-          <label>Senha
-            <input name="password" type="password" autocomplete="new-password" minlength="8" required>
-          </label>
-          <label class="check">
-            <input name="consent_lgpd" type="checkbox" required>
+          <label class="check" data-privacy-consent hidden>
+            <input name="consent_lgpd" type="checkbox">
             <span>Li e aceito a <a href="/privacidade" target="_blank" rel="noopener">politica de privacidade</a> e o tratamento dos meus dados para uso do assistente financeiro.</span>
           </label>
-          <button type="submit">Cadastrar</button>
+          <button type="submit" data-auth-submit>Entrar</button>
         </form>
-      </div>
 
-      <form class="panel confirm-form" data-confirm-form hidden>
-        <div class="panel__title">
-          <h2>Confirmar email</h2>
-          <span>Ambiente dev</span>
+        <div class="auth-divider"><span>ou continue com</span></div>
+
+        <div class="oauth-row">
+          <button type="button" class="oauth-button" data-oauth="google" aria-label="Entrar com Google">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="#4285f4" d="M22.6 12.2c0-.8-.1-1.5-.2-2.2H12v4.2h5.9c-.3 1.3-1 2.4-2.1 3.1v2.6h3.4c2-1.8 3.4-4.5 3.4-7.7z"/>
+              <path fill="#34a853" d="M12 23c3 0 5.5-1 7.3-2.7l-3.4-2.6c-.9.6-2.1 1-3.9 1-3 0-5.6-2-6.5-4.8H2v2.7C3.8 20.4 7.6 23 12 23z"/>
+              <path fill="#fbbc05" d="M5.5 13.9c-.2-.6-.4-1.3-.4-1.9s.1-1.3.4-1.9V7.4H2C1.3 8.8 1 10.3 1 12s.3 3.2 1 4.6l3.5-2.7z"/>
+              <path fill="#ea4335" d="M12 5.3c1.6 0 3.1.6 4.2 1.7l3.1-3.1C17.5 2.1 15 1 12 1 7.6 1 3.8 3.6 2 7.4l3.5 2.7C6.4 7.3 9 5.3 12 5.3z"/>
+            </svg>
+            <span>Google</span>
+          </button>
+          <button type="button" class="oauth-button" data-oauth="apple" aria-label="Entrar com Apple">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M16.4 1.6c.1 1.1-.3 2.1-1 2.9-.8.9-1.8 1.4-2.8 1.3-.1-1 .3-2.1 1-2.8.7-.8 1.9-1.4 2.8-1.4zM20.2 17.5c-.4.9-.7 1.4-1.2 2.2-.8 1.2-1.9 2.7-3.3 2.7-1.2 0-1.6-.8-3.3-.8s-2.1.8-3.3.8c-1.4.1-2.5-1.6-3.3-2.8-2.3-3.4-2.5-7.4-1.1-9.5 1-1.5 2.5-2.4 3.9-2.4 1.5 0 2.4.8 3.6.8 1.2 0 1.9-.8 3.6-.8 1.3 0 2.7.7 3.7 1.9-3.2 1.7-2.7 6.3.1 7.9z"/>
+            </svg>
+            <span>Apple</span>
+          </button>
         </div>
-        <label>Token recebido por email
-          <input name="token" required>
-        </label>
-        <button type="submit">Confirmar e entrar</button>
-      </form>
 
-      <div class="oauth-row">
-        <button type="button" data-oauth="google">Google</button>
-        <button type="button" data-oauth="apple">Apple</button>
-      </div>
-      <p class="auth-message" data-auth-message></p>
+        <form class="confirm-form" data-confirm-form hidden>
+          <div class="panel__title compact">
+            <h2>Confirmar email</h2>
+            <span>Ambiente dev</span>
+          </div>
+          <label>Token recebido por email
+            <input name="token" required>
+          </label>
+          <button type="submit">Confirmar e entrar</button>
+        </form>
+
+        <p class="auth-message" data-auth-message></p>
+      </section>
     </section>
 
     <section data-app-view hidden>

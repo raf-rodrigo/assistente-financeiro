@@ -12,6 +12,7 @@ const state = {
   summary: null,
   transactions: [],
   token: localStorage.getItem("finance_token"),
+  authMode: "login",
 };
 
 async function api(path, options = {}) {
@@ -38,9 +39,24 @@ function showApp(isAuthenticated) {
   document.querySelector("[data-app-view]").hidden = !isAuthenticated;
 }
 
-async function register(event) {
-  event.preventDefault();
-  const payload = Object.fromEntries(new FormData(event.currentTarget).entries());
+function setAuthMode(mode) {
+  state.authMode = mode;
+  const isRegister = mode === "register";
+  document.querySelector("[data-auth-title]").textContent = isRegister ? "Criar conta" : "Entrar";
+  document.querySelector("[data-auth-subtitle]").textContent = isRegister ? "Confirme o email" : "Email e senha";
+  document.querySelector("[data-auth-submit]").textContent = isRegister ? "Cadastrar" : "Entrar";
+  document.querySelector("[data-privacy-consent]").hidden = !isRegister;
+  document.querySelector("[name=password]").autocomplete = isRegister ? "new-password" : "current-password";
+  document.querySelector("[name=consent_lgpd]").required = isRegister;
+  document.querySelector("[data-confirm-form]").hidden = true;
+  document.querySelectorAll("[data-auth-mode]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.authMode === mode);
+  });
+  setAuthMessage("");
+}
+
+async function register(form) {
+  const payload = Object.fromEntries(new FormData(form).entries());
   payload.consent_lgpd = payload.consent_lgpd === "on";
   try {
     const data = await api("/api/auth/register", { method: "POST", body: JSON.stringify(payload) });
@@ -54,9 +70,8 @@ async function register(event) {
   }
 }
 
-async function login(event) {
-  event.preventDefault();
-  const payload = Object.fromEntries(new FormData(event.currentTarget).entries());
+async function login(form) {
+  const payload = Object.fromEntries(new FormData(form).entries());
   try {
     const data = await api("/api/auth/login", { method: "POST", body: JSON.stringify(payload) });
     state.token = data.token;
@@ -66,6 +81,13 @@ async function login(event) {
   } catch (error) {
     setAuthMessage("Login invalido ou email ainda nao confirmado.");
   }
+}
+
+async function submitAuth(event) {
+  event.preventDefault();
+  const form = event.currentTarget;
+  if (state.authMode === "register") await register(form);
+  else await login(form);
 }
 
 async function confirmEmail(event) {
@@ -181,9 +203,11 @@ document.addEventListener("click", async (event) => {
 document.querySelector("[data-transaction-form]").addEventListener("submit", addTransaction);
 document.querySelector("[data-assistant-form]").addEventListener("submit", askAssistant);
 document.querySelector("[data-subscription]").addEventListener("change", updateSubscription);
-document.querySelector("[data-register-form]").addEventListener("submit", register);
-document.querySelector("[data-login-form]").addEventListener("submit", login);
+document.querySelector("[data-auth-form]").addEventListener("submit", submitAuth);
 document.querySelector("[data-confirm-form]").addEventListener("submit", confirmEmail);
+document.querySelectorAll("[data-auth-mode]").forEach((button) => {
+  button.addEventListener("click", () => setAuthMode(button.dataset.authMode));
+});
 document.querySelectorAll("[data-oauth]").forEach((button) => {
   button.addEventListener("click", async () => {
     const data = await api(`/api/auth/oauth/${button.dataset.oauth}`);
@@ -191,6 +215,7 @@ document.querySelectorAll("[data-oauth]").forEach((button) => {
   });
 });
 document.querySelector("[name=occurred_on]").value = today();
+setAuthMode("login");
 if (state.token) {
   showApp(true);
   refresh().catch(() => {
